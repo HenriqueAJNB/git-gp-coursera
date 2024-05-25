@@ -40,6 +40,19 @@ def update_item(item_id:int, item:Item):
 
 @app.delete("/items/{item_id}")
 def delete_item(item_id: int):
+    """
+    API route to delete an item from the database.
+
+    Parameters
+    ----------
+    item_id : int
+        The id of the item to be deleted.
+
+    Returns
+    -------
+    dict
+        A message indicating the deletion was successful.
+    """
     conn = get_db()
     conn.execute("DELETE FROM items WHERE id = ?", (item_id,))
     conn.commit()
