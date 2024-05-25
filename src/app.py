@@ -37,3 +37,10 @@ def update_item(item_id:int, item:Item):
         else None, item_id),)
     conn.commit()
     return item
+
+@app.delete("/items/{item_id}")
+def delete_item(item_id: int):
+    conn = get_db()
+    conn.execute("DELETE FROM items WHERE id = ?", (item_id,))
+    conn.commit()
+    return {"message": "Item deleted"}
