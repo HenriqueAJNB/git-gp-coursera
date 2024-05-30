@@ -1,8 +1,15 @@
 from src.database import get_db, startup_event
 from fastapi import FastAPI, HTTPException
 from src.models import Item
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
 app = FastAPI()
 app.add_event_handler("startup", startup_event)
+
+@app.exception_handler(RequestValidationError)
+def validation_exception_handler(request, exc):
+    return JSONResponse(status_code=400, content={"message": "Validation error", "errors": exc.errors()})
+
 @app.post("/items/", status_code=201)
 def create_item(item:Item):
     conn = get_db()
